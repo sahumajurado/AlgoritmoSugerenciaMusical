@@ -1,12 +1,14 @@
 import Conexion
 import sys
 import pygame
-
+import getpass
 # Crear un cursor
 conexion = Conexion.establecer_conexion()
 cursor = conexion.cursor()
 
+print("---------------------------------------")
 print("Bienvenido al reproductor musical PyArd")
+print("---------------------------------------")
 
 def menu_principal():
     print("Seleccione alguna de las siguientes opciones: ")
@@ -31,13 +33,15 @@ def registrar_usuario():
     try:
         cursor.execute(query, datos_usuario)
         conexion.commit()
+        print("---------------------------------------")
         print("Usuario registrado con éxito.")
     except Exception as e:
+        print("---------------------------------------")
         print(f"Error al registrar usuario: {e}")
 
-def ingresar():
+def login():
     user = input("Ingrese su usuario: ")
-    password = input("Ingrese su contraseña: ")
+    password = getpass.getpass("Ingrese su contraseña: ")
 
     # Consulta parametrizada para verificar las credenciales
     query_usuario = "SELECT * FROM usuario WHERE nombre_user = %s AND contraseña = %s"
@@ -48,9 +52,13 @@ def ingresar():
         resultado_usuario = cursor.fetchone()
 
         if resultado_usuario:
+            print("---------------------------------------")
             print("Inicio de sesión exitoso.")
+            print("---------------------------------------")
         else:
+            print("---------------------------------------")
             print("Credenciales incorrectas. Intente nuevamente.")
+            print("---------------------------------------")
     except Exception as e:
         print(f"Error al ingresar: {e}")
 
@@ -116,7 +124,7 @@ while True:
     opcion = input("Ingrese el número de la opción deseada: ")
 
     if opcion == "1":
-        ingresar()
+        login()
         listar_canciones()
         reproducir_musica()
     elif opcion == "2":

@@ -13,10 +13,12 @@ print("Bienvenido al reproductor musical PyArd")
 resultado_usuario = None
 
 def menu_principal():
+    print("------------------------------------------------")
     print("Seleccione alguna de las siguientes opciones: ")
     print("1. Ingresar cuenta existente")
     print("2. Registrarse")
     print("3. Salir de la aplicación")
+    print("------------------------------------------------")
 
 def registrar_usuario():
     nombre = input("Ingresar nombre: ")
@@ -35,9 +37,14 @@ def registrar_usuario():
     try:
         cursor.execute(query, datos_usuario)
         conexion.commit()
+        print("------------------------------------------------")
         print("Usuario registrado con éxito.")
+        print("------------------------------------------------")
+
     except Exception as e:
+        print("------------------------------------------------")
         print(f"Error al registrar usuario: {e}")
+        print("------------------------------------------------")
 
 def ingresar():
     global resultado_usuario  # Hacer la variable global para almacenar el resultado del inicio de sesión
@@ -53,11 +60,18 @@ def ingresar():
         resultado_usuario = cursor.fetchone()
 
         if resultado_usuario:
+            print("------------------------------------------------")
             print("Inicio de sesión exitoso.")
+            print("------------------------------------------------")
+
         else:
+            print("------------------------------------------------")
             print("Credenciales incorrectas. Intente nuevamente.")
+            print("------------------------------------------------")
     except Exception as e:
+        print("------------------------------------------------")
         print(f"Error al ingresar: {e}")
+        print("------------------------------------------------")
 
 def salir():
     cursor.close()
@@ -128,33 +142,61 @@ while True:
     if opcion == "1":
         ingresar()
         if resultado_usuario:
+            print("------------------------------------------------")
             print("Opciones disponibles:")
             print("1. Ir a la lista de favoritos")
             print("2. Listar canciones")
-            print("3. Reproducir música")
-            print("4. Salir")
+            print("3. Salir")
+            print("------------------------------------------------")
 
             opcion_usuario = input("Ingrese el número de la opción deseada: ")
 
             if opcion_usuario == "1":
+                print("------------------------------------------------")
                 ir_a_favoritos()
+                print("------------------------------------------------")
             elif opcion_usuario == "2":
+                print("------------------------------------------------")
                 listar_canciones()
+                print("------------------------------------------------")
                 cancion_id = input("Seleccione la canción a escuchar (ingrese el ID): ")
                 query_reproducir = "SELECT archivo_musica FROM cancion WHERE id_cancion = %s"
                 datos_reproducir = (cancion_id,)
                 cursor.execute(query_reproducir, datos_reproducir)
                 archivo_musica = cursor.fetchone()[0]
                 reproducir_musica(archivo_musica)
+
+                agregar_lista = input("¿Desea agregarlo a su lista de reproducción? (si/no):")
+                if agregar_lista=='si':
+                    print("------------------------------")
+                    print("Abriendo lista de favoritos...")
+                    print("------------------------------")
+                else:
+                    listar_canciones()
+                    print("--------------------------------")
+                    cancion_id = input("Seleccione la canción a escuchar (ingrese el ID): ")
+                    query_reproducir = "SELECT archivo_musica FROM cancion WHERE id_cancion = %s"
+                    datos_reproducir = (cancion_id,)
+                    cursor.execute(query_reproducir, datos_reproducir)
+                    archivo_musica = cursor.fetchone()[0]
+                    reproducir_musica(archivo_musica)
+                    print("-------------------------------")
+                    print("¿Qué canción desea escuchar (Agregue una opción de la lista:)): ")
             elif opcion_usuario == "3":
-                reproducir_musica()
-            elif opcion_usuario == "4":
                 salir()
             else:
                 print("Opción no válida. Intente nuevamente.")
     elif opcion == "2":
+        print("------------------------------------------------")
         registrar_usuario()
+        print("------------------------------------------------")
     elif opcion == "3":
+        print("------------------------------------------------")
         salir()
+        print("------------------------------------------------")
+
     else:
+        print("------------------------------------------------")
         print("Opción no válida. Intente nuevamente.")
+        print("------------------------------------------------")
+
